@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TodoApp.EF;
+using TodoApp.Repository;
+using TodoApp.Repository.Implement;
+using TodoApp.Service;
+using TodoApp.Service.Implement;
+using TodoApp.UOF;
+using TodoApp.UOF.Implement;
 
-namespace ToDoApp
+namespace TodoApp
 {
     public class Startup
     {
@@ -24,6 +27,10 @@ namespace ToDoApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<TodoDbContext>(context => { context.UseInMemoryDatabase("ConferencePlanner"); });
+            services.AddScoped<ITodoService, TodoService>();
+            services.AddScoped<IDataRepository, DataRepository>();
+            services.AddScoped<IUnitOfWord, UnitOfWord>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +57,7 @@ namespace ToDoApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Todo}/{action=Index}/{id?}");
             });
         }
     }

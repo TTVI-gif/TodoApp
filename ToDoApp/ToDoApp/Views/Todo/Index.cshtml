@@ -1,0 +1,139 @@
+﻿@model IEnumerable<TodoApp.Entities.TodoListItem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+</style>
+<h1>Quản lí tác vụ</h1>
+
+<p>
+    <a asp-action="Create">Thêm tác vụ</a>
+</p>
+
+@using (Html.BeginForm("Index", "Todo", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="form-group" style="margin-bottom: 10px; margin-left: -15px">
+        <input type="Text" class="form-control mx-sm-3" value="@ViewBag.keyWork" name="keywork" placeholder="Nhập tác vụ cần tìm">
+        @*<input type="button" class="btn btn-danger" value="Tìm tác vụ">*@
+    </div>
+    <hr />
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddDate)
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @ViewBag.list2_incomplete)
+        {
+            if (!item.Index)
+            {
+                <tr>
+                    <td>
+
+                        @item.Title
+                    </td>
+                    <td >
+                        @item.AddDate
+                    </td>
+                    <td>
+                        @if (item.IsCompleted)
+                        {<p>Completed</p> }
+                        else
+                        {
+                            <p>InCompleted</p>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { @id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { @id = item.Id }) |
+                        @Html.ActionLink("Completed", "Completed", new { @id = item.Id }) |
+                        @Html.ActionLink("MoveUp", "MoveUp", new { @id = item.Id })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.AddDate
+                    </td>
+                    <td>
+                        @if (item.IsCompleted)
+                        {<p>Completed</p> }
+                        else
+                        {
+                            <p>InCompleted</p>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { @id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { @id = item.Id }) |
+                        @Html.ActionLink("Completed", "Completed", new { @id = item.Id }) |
+                        @Html.ActionLink("MoveDown", "MoveDown", new { @id = item.Id })
+                    </td>
+                </tr>
+
+            }
+        }
+
+    </tbody>
+
+</table>
+<div style="font-weight:bold">Tác vụ hoàn thành</div>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @ViewBag.list1_completed)
+        {
+
+            <tr>
+                <td>
+
+                    @item.Title
+                </td>
+                <td >
+                    @item.AddDate
+                </td>
+                <td>
+                    @if (item.IsCompleted)
+                    {<p>Completed</p> }
+                    else
+                    {
+                        <p>InCompleted</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { @id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { @id = item.Id }) |
+
+                </td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+
+
